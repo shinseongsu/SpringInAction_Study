@@ -3,7 +3,9 @@ package taco.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import taco.vo.Ingredient;
 
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
 
 import taco.vo.Ingredient.Type;
 import taco.vo.Taco;
+
+import javax.validation.Valid;
 
 /**
  *
@@ -24,6 +28,13 @@ import taco.vo.Taco;
 @RequestMapping("/design")
 public class DesignTacoController {
 
+    /**
+     *
+     * /design url 요청 HTTP GET
+     *
+     * @param model
+     * @return
+     */
     @GetMapping
     public String showDesignForm(Model model) {
         List<Ingredient> ingredients = Arrays.asList(
@@ -56,6 +67,24 @@ public class DesignTacoController {
                     .stream()
                     .filter(x -> x.getType().equals(type))
                     .collect(Collectors.toList());
+    }
+
+    /**
+     *
+     * /design POST 요청한다.
+     *
+     * @param design
+     * @return
+     */
+    @PostMapping
+    public String processDesign(@Valid Taco design, Errors errors) {
+        if(errors.hasErrors()) {
+            return "design";
+        }
+
+        log.info("Processing design: " + design);
+
+        return "redirect:/orders/current";
     }
 
 }
