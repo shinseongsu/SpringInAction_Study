@@ -27,9 +27,12 @@ public class JdbcTacoRepository implements TacoRepository {
     public Taco save(Taco taco) {
         long tacoId = saveTacoInfo(taco);
         taco.setId(tacoId);
+
+        // 스프링 Converter를 우리가 구현한 IngredientByIdConverter의 Convert() 메서드가 이때 자동 실행된다.
         for (Ingredient ingredient : taco.getIngredients()) {
             saveIngredientToTaco(ingredient, tacoId);
         }
+
         return taco;
     }
 
@@ -42,9 +45,7 @@ public class JdbcTacoRepository implements TacoRepository {
                 ).newPreparedStatementCreator(
                         Arrays.asList(
                                 taco.getName(),
-                                new Timestamp(taco.getCreatedAt().getTime())
-                        )
-                );
+                                new Timestamp(taco.getCreatedAt().getTime())));
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbc.update(psc, keyHolder);
@@ -52,14 +53,12 @@ public class JdbcTacoRepository implements TacoRepository {
         return keyHolder.getKey().longValue();
     }
 
-    private void saveIngredientToTaco (
+    private void saveIngredientToTaco(
             Ingredient ingredient, long tacoId) {
         jdbc.update(
                 "insert into Taco_Ingredients (taco, ingredient) " +
                         "values (?, ?)",
-                tacoId, ingredient.getId()
-        );
+                tacoId, ingredient.getId());
     }
-
 
 }
