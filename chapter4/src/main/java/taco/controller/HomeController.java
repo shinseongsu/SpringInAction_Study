@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
  *
  *   "home" 을 반환한다.
  */
+
+/*
 @Controller
 public class HomeController {
 
@@ -19,3 +21,4 @@ public class HomeController {
     }
 
 }
+*/
