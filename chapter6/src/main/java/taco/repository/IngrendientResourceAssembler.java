@@ -1,7 +1,7 @@
 package taco.repository;
 
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
-import taco.controller.DesignRestController;
+import taco.api.IngredientRestController;
 import taco.vo.Ingredient;
 import taco.vo.IngredientResource;
 
@@ -10,7 +10,7 @@ public class IngrendientResourceAssembler extends
 
 
     public IngrendientResourceAssembler() {
-        super(DesignRestController.class, IngredientResource.class);
+        super(IngredientRestController.class, IngredientResource.class);
     }
 
     @Override
